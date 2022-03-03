@@ -1,0 +1,33 @@
+{% extends 'main.html'%}
+{% block content%}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>here is :{{room.name}}</p>
+    <div class="comment-wrapper">
+        <h3>conversations</h3>
+        <hr>
+        {% for message in room_messages %}
+        <div>
+            <small>@{{message.user}}  {{message.created|timesince}}</small>
+            <p>{{message.body}}</p>
+        </div>
+        {%endfor%}
+
+    <div class="comment-form">
+        {% if request.user.is_authenticated%}
+        <form method="POST" action="">
+            {%csrf_token%}
+            <input type="text" name="body" placeholder="type messages here">
+        </form>
+        {% endif%}
+    </div>
+    </div>
+</body>
+</html>
+{% endblock content%}

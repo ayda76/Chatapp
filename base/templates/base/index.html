@@ -1,0 +1,66 @@
+{% extends 'main.html'%}
+{% block content%}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+      .home-container{
+        display: grid;
+        grid-template-columns: 1fr 3fr;
+      }
+    </style>
+</head>
+<body>
+  <!--{% include 'nav.html'%}-->  
+    
+    <div class="home-container">
+
+      <div>
+        <h3>Browse topics</h3>
+        <hr>
+
+        <div>
+          <a href="{% url 'home'%}">All</a>
+        </div>
+        {% for topic in topics%}
+        <div>
+          <a href="{% url 'home'%}?q={{topic.name}}">{{topic.name}}</a>
+        </div>
+       
+        {% endfor%}
+      </div>
+
+      <div class="">
+        <h5>{{rooms_count}} rooms found</h5>
+        <a href="{% url 'createRoom'%}">create room</a>
+        <div>
+            {% for room in rooms%}
+            <div>
+              {% if request.user == room.host %}
+              <a href="{% url 'updateRoom' room.id %}">Edit</a>
+                <a href="{% url 'deleteRoom' room.id %}">Delete</a>
+                {% endif%}
+                <span>
+                 host:   @ {{ room.host}}
+                </span>
+                <!--<a href="/room/{{room.id}}">{{room.name}}</a>-->
+                <p>{{room.id}}--room:<a href="{% url 'room' room.id%}">{{room.name}}</a>  </p>
+               <small>topic:{{room.topic.name}}</small>
+               <hr>
+            </div>
+            {% endfor%}
+        </div>
+
+      </div>
+
+
+
+      
+    </div>
+</body>
+</html>
+{% endblock content%}

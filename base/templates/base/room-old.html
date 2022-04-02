@@ -1,0 +1,59 @@
+{% extends 'main.html'%}
+{% block content%}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .room-container{
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+        }
+    </style>
+</head>
+<body>
+    <div class="room-container">
+        <div>
+    <p>here is :{{room.name}}</p>
+    <div class="comment-wrapper">
+        <h3>conversations</h3>
+        <hr>
+        {% for message in room_messages %}
+        <div>
+            {% if request.user == message.user%}
+            <a href="{% url 'deleteMessage' message.id %}">delete</a>
+            {% endif %}
+            <small>@{{message.user}}  {{message.created|timesince}}</small>
+            <p>{{message.body}}</p>
+        </div>
+        {%endfor%}
+
+    <div class="comment-form">
+        {% if request.user.is_authenticated%}
+        <form method="POST" action="">
+            {%csrf_token%}
+            <input type="text" name="body" placeholder="type messages here">
+        </form>
+        {% endif%}
+    </div>
+    </div>
+</div>
+
+<div>
+    <h3>participants</h3>
+    <hr>
+
+    {% for user in participants%}
+    <div>
+        <p>@{{user.username}}</p>
+    </div>
+
+    {%endfor%}
+</div>
+
+</div>
+</body>
+</html>
+{% endblock content%}

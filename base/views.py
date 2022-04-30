@@ -25,7 +25,7 @@ def loginPage(request):
 
     if request.user.is_authenticated:
         return redirect('home')
-
+    form=UserCreationForm()
     page='login'
     if request.method=='POST':
         username=request.POST.get('username').lower()
@@ -44,15 +44,16 @@ def loginPage(request):
         else:
             messages.error(request,'username or password is not correct') 
     
-    return render(request,'base/login-register.html',{'page':page})
+    return render(request,'base/login-register.html',{'page':page,'form':form})
 
 def logoutUser(request):
     logout(request)
     return redirect('home')
 
 def registerPage(request):
+    
     form=UserCreationForm()
-    if request.method=='POST':
+    if request.method =='POST':
         form=UserCreationForm(request.POST)
         if form.is_valid():
             user=form.save(commit=False)
